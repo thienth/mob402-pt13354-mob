@@ -1,0 +1,31 @@
+<div class="container">
+    <table class="table table-hover">
+        <thead>
+            <th>#</th>
+            <th>Tên sp</th>
+            <th>Ảnh sp</th>
+            <th>Giá sp</th>
+            <th>
+                <a href="/products/add" class="btn btn-sm btn-success">Thêm</a>
+            </th>
+        </thead>
+        <tbody>
+            {{#each products}}
+                <tr>
+                    <td>{{this.id}}</td>
+                    <td>{{this.name}}</td>
+                    <td>
+                        <img src="{{this.image}}" width="100" class="img-responsive">
+                    </td>
+                    <td>{{this.price}}</td>
+                    <td>
+                        <a href="/products/edit" class="btn btn-sm btn-primary">Sửa</a>
+                        <a href="/products/remove" class="btn btn-sm btn-danger">Xóa</a>
+                    </td>
+                </tr>
+            {{/each}}
+        </tbody>
+
+    </table>
+    {{x}}
+</div>

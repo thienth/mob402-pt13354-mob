@@ -1,0 +1,9 @@
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema; // su dung doi tuong tao ra template cho collection
+var categorySchema = new Schema({
+    name: {type: String, required: true, unique: true},
+    image: {type: String, default: null},
+    description: {type: String, default: null}
+});
+
+module.exports = mongoose.model('categories', categorySchema);

@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-
+var Category = require('../models/category');
 /* GET home page. */
 router.get('/', function(req, res, next) {
   var products = [
@@ -29,6 +29,14 @@ router.get('/', function(req, res, next) {
   res.render('index', {products: products, x: a});
 });
 
+router.get('/categories/:_id', async (req, res, next) => {
+  let cates = await Category.find({_id: req.params._id});
+  let cateList = await Category.find({});
+  console.log(cates.length);
+  console.log(cateList.length);
+  console.log(1);
+  res.send('ok');
+});
 
 
 module.exports = router;

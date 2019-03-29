@@ -1,18 +1,18 @@
-<form action="/cates">
-
+<form action="/cates/save-edit" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="id" value="{{cate._id}}">
     <div>
         <label for="">Tên danh mục</label>
-        <input type="text" value="Tủ lạnh">
+        <input type="text" name="name" value="{{cate.name}}">
     </div>
     <div>
-        <img src="https://sc01.alicdn.com/kf/HTB1fG5pSFXXXXXUXFXXq6xXFXXXw/Open-transparent-bralette-sexy-girl-japanese-girl.jpg_350x350.jpg" width="100">
+        <img src="{{cate.image}}" width="100">
         <br>
         <label for="">Ảnh danh mục</label>
-        <input type="file">
+        <input type="file" name="image">
     </div>
     <div>
         <label for="">Mô tả</label>
-        <textarea name="" id="" cols="30" rows="5">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Doloremque modi vero ut aperiam exercitationem quo veniam illo eius neque numquam aspernatur minima molestiae iure laudantium, reiciendis quam ducimus ipsum autem?</textarea>
+        <textarea name="description" cols="30" rows="5">{{cate.description}}</textarea>
     </div>
     <div>
         <button type="submit">Lưu</button>

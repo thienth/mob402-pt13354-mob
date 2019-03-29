@@ -46,8 +46,14 @@ router.post('/cates/save-add', upload.single('image'),function(req, res, next){
   });
 });
 
-router.get('/cates/edit', function(req, res, next){
-  res.render('category/edit');
+router.get('/cates/edit/:cId', function(req, res, next){
+  Category.findOne({_id: req.params.cId}, function(err, data){
+    if(err){
+      res.send('id khong ton tai');
+    }
+    res.render('category/edit', {cate: data});
+  });
+  
 });
 
 router.get('/cates/remove/:cId', function(req, res, next){

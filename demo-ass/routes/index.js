@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var multer = require('multer');
+var shortid = require('shortid');
+
 var storage = multer.diskStorage({
   destination: function(req, file, cb){
     // cau hinh noi luu tru file upload
@@ -8,7 +10,7 @@ var storage = multer.diskStorage({
   },
   filename: function(req, file, cb){
     // cau hinh ten file upload
-    cb(null, file.originalname);
+    cb(null, shortid.generate() + "-" + file.originalname);
   }
 });
 
@@ -31,15 +33,17 @@ router.get('/cates/add', function(req, res, next){
   res.render('category/add');
 });
 
-router.post('/cates/save-add', function(req, res, next){
+router.post('/cates/save-add', upload.single('image'),function(req, res, next){
 
   var model = new Category();
   model.name = req.body.name;
-  model.image = req.body.image;
+  // lay anh = duong dan cua file vua upload len - loai bo tu public
+  model.image = req.file.path.replace('public', '');
   model.description = req.body.description;
 
-  model.save();
-  res.redirect('/cates');
+  model.save(function(err){
+    res.redirect('/cates');
+  });
 });
 
 router.get('/cates/edit', function(req, res, next){

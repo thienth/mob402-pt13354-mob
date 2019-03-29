@@ -1,12 +1,12 @@
-<form action="/cates/save-add" method="post">
+<form action="/cates/save-add" method="post" enctype="multipart/form-data">
 
     <div>
         <label for="">Tên danh mục</label>
         <input type="text" name="name">
     </div>
     <div>
-        <label for="">Ảnh danh mục</label>
-        <input type="text" name="image">
+        <label>Ảnh danh mục</label>
+        <input type="file" name="image">
     </div>
     <div>
         <label for="">Mô tả</label>

@@ -1,5 +1,18 @@
 var express = require('express');
 var router = express.Router();
+var multer = require('multer');
+var storage = multer.diskStorage({
+  destination: function(req, file, cb){
+    // cau hinh noi luu tru file upload
+    cb(null, './public/uploads');
+  },
+  filename: function(req, file, cb){
+    // cau hinh ten file upload
+    cb(null, file.originalname);
+  }
+});
+
+var upload = multer({ storage: storage});
 
 var Category = require('../models/category');
 /* GET home page. */

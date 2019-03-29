@@ -50,4 +50,14 @@ router.get('/cates/edit', function(req, res, next){
   res.render('category/edit');
 });
 
+router.get('/cates/remove/:cId', function(req, res, next){
+  Category.deleteOne({_id: req.params.cId}, function(err){
+    if(err){
+      res.send('Xoa khong thanh cong');
+    }
+
+    res.redirect('/cates');
+  });
+});
+
 module.exports = router;

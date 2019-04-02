@@ -56,6 +56,33 @@ router.get('/cates/edit/:cId', function(req, res, next){
   
 });
 
+router.post('/cates/save-edit', upload.single('image'), function(req, res, next){
+  // lay ra id tu form gui len
+  var cId = req.body.id;
+  // 1. lay thong tin category dua vao id
+  Category.findOne({_id: cId}, function(err, model){
+    if(err){
+      res.send('id khong ton tai');
+    }
+    // 2. add thong tin tu form vao model
+    model.name = req.body.name;
+    model.description = req.body.description;
+    // 3. Kiem tra xem co anh hay khong
+    if(req.file != null){
+      model.image = req.file.path.replace('public', '');
+    }
+
+    // 4. luu model lai
+    model.save(function(err){
+      if(err){
+        res.send('Luu khong thanh cong');
+      }
+      res.redirect('/cates');
+    })
+
+  })
+});
+
 router.get('/cates/remove/:cId', function(req, res, next){
   Category.deleteOne({_id: req.params.cId}, function(err){
     if(err){

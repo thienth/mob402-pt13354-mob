@@ -1,0 +1,39 @@
+<form action="/products/save-edit" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="id" value="{{product._id}}">
+    <div>
+        <label for="">Tên sản phẩm</label>
+        <input type="text" name="name" value="{{product.name}}">
+    </div>
+    <div>
+        <label>Danh mục</label>
+        <select name="cate_id" >
+            {{#each cates}}
+            <option value="{{this._id}}"
+                {{#if this.selected}}
+                    selected
+                {{/if}}
+            >{{this.name}}</option>
+            {{/each}}
+        </select>
+    </div>
+    <div>
+        <div>
+            <img src="{{product.image}}" width="150">
+        </div>
+        <label>Ảnh sản phẩm</label>
+        <input type="file" name="image">
+    </div>
+    <div>
+        <label for="">Giá sản phẩm</label>
+        <input type="number" name="price" value="{{product.price}}">
+    </div>
+    <div>
+        <label for="">Mô tả</label>
+        <textarea name="detail" id="" cols="30" rows="5">{{product.detail}}</textarea>
+    </div>
+    <div>
+        <button type="submit">Lưu</button>
+        <a href="/">Hủy</a>
+    </div>
+
+</form>

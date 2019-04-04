@@ -17,10 +17,93 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage});
 
 var Category = require('../models/category');
-/* GET home page. */
+var Product = require('../models/product');
+/* Danh sach san pham */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  Product.find({})
+          .populate('cate_id')
+          .exec(function(err, data){
+            if(err){
+              res.send('Da co loi he thong');
+            }
+            res.render('product/index', { products: data });
+          });
 });
+
+router.get('/products/add', function(req, res, next){
+  Category.find({}, function(err, cates){
+    res.render('product/add-form', {cates: cates});
+  })
+});
+
+router.post('/products/save-add', upload.single('image'), function(req, res, next){
+  var model = new Product();
+  model.name = req.body.name;
+  model.price = req.body.price;
+  model.cate_id = req.body.cate_id;
+  model.detail = req.body.detail;
+  model.image = req.file.path.replace('public', '');
+
+  model.save(function(err){
+    if(err){
+      res.send("Luu khong thanh cong")
+    }
+    res.redirect('/');
+  });
+});
+
+router.get('/products/remove/:pId', function(req, res, next){
+  Product.deleteOne({_id: req.params.pId}, function(err){
+    if(err){
+      res.send('Xoa khong thanh cong');
+    }
+
+    res.redirect('/');
+  });
+});
+
+router.get('/products/edit/:pId', function(req, res, next){
+  Product.findOne({_id: req.params.pId}, function(err, data){
+    if(err){
+      res.send('id khong ton tai');
+    }
+    
+
+    Category.find({}, function(err, cates){
+
+      for (let i = 0; i < cates.length; i++) {
+        if(cates[i].id == data.cate_id.toString()){
+          cates[i].selected = true;
+          break;
+        }
+      }
+
+      console.log(cates);
+      res.render('product/edit-form', {product: data, cates: cates});
+    })
+  });
+});
+
+router.post('/products/save-edit', upload.single('image'), function(req, res, next){
+  Product.findOne({_id: req.body.id}, function(err, model){
+    model.name = req.body.name;
+    model.price = req.body.price;
+    model.detail = req.body.detail;
+    model.cate_id = req.body.cate_id;
+    if(req.file != null){
+      model.image = req.file.path.replace('public', '');
+    }
+
+    model.save(function(err){
+      if(err){
+        res.send('Luu khong thanh cong');
+      }
+
+      res.redirect('/');
+    })
+  })
+});
+
 
 router.get('/cates', function(req, res, next){
   Category.find({}, function(err, data){
@@ -53,7 +136,6 @@ router.get('/cates/edit/:cId', function(req, res, next){
     }
     res.render('category/edit', {cate: data});
   });
-  
 });
 
 router.post('/cates/save-edit', upload.single('image'), function(req, res, next){
